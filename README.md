@@ -45,8 +45,8 @@ Fit the model and predict the single input
 
 ## PROGRAM
 
-### Name: YUVASAKTHI N.C
-### Register Number:212222240120
+### Name: SRIRAM.S
+### Register Number:212222240105
 ```
 import numpy as np
 from tensorflow import keras
@@ -95,7 +95,7 @@ y_train_onehot.shape
 
 single_image = X_train[700]
 plt.imshow(single_image,cmap='gray')
-print("YUVASAKTHI N.C \n212222240120")
+print("SRIRAM S \n212222240105")
 
 y_train_onehot[500]
 
