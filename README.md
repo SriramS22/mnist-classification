@@ -1,40 +1,56 @@
- # Convolutional Deep Neural Network for Digit Classification
+# Convolutional Deep Neural Network for Digit Classification
 
 ## AIM
 
 To Develop a convolutional deep neural network for digit classification and to verify the response for scanned handwritten images.
 
 ## Problem Statement and Dataset
-Problem Statement: Handwritten Digit Recognition with Convolutional Neural Networks
+Digit classification and to verify the response for scanned handwritten images.
 
-Objective: Develop a Convolutional Neural Network (CNN) model to accurately classify handwritten digits (0-9) from the MNIST dataset.
-
-Data: The MNIST dataset, a widely used benchmark for image classification, contains grayscale images of handwritten digits (28x28 pixels). Each image is labeled with the corresponding digit (0-9).
-
+The MNIST dataset is a collection of handwritten digits. The task is to classify a given image of a handwritten digit into one of 10 classes representing integer values from 0 to 9, inclusively. The dataset has a collection of 60,000 handwrittend digits of size 28 X 28. Here we build a convolutional neural network model that is able to classify to it's appropriate numerical value.
 ## Neural Network Model
-![nueral network image](https://github.com/user-attachments/assets/87d136e3-925b-4fda-93bb-2c7937bcc1af)
 
-
+Include the neural network model diagram.
 
 ## DESIGN STEPS
 
-### STEP 1: Import libraries
-### STEP 2: Load and preprocess data
-### STEP 3: Define model architecture
-### STEP 4: Compile the model
-### STEP 5: Train the model
-### STEP 6: Evaluate the model
+### STEP 1:
+Import tensorflow and preprocessing libraries.
+
+### STEP 2:
+Download and load the dataset
+
+### STEP 3:
+Scale the dataset between it's min and max values
+
+### STEP 4:
+Using one hot encode, encode the categorical values
+
+### STEP 5:
+Split the data into train and test
+
+### STEP 6:
+Build the convolutional neural network model
+
+### STEP 7:
+Train the model with the training data
+
+### STEP 8:
+Plot the performance plot
+### STEP 9:
+Evaluate the model with the testing data
+
+### STEP 10:
+Fit the model and predict the single input
 
 ## PROGRAM
 
-### Name: Sriram S
-### Register Number: 212222240105
-```python
+### Name: YUVASAKTHI N.C
+### Register Number:212222240120
+```
 import numpy as np
 from tensorflow import keras
 from tensorflow.keras import layers
-from tensorflow.keras.layers import Conv2D,MaxPooling2D,Dense,Flatten,Dropout
-from tensorflow.keras.metrics import CategoricalCrossentropy
 from tensorflow.keras.datasets import mnist
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -75,65 +91,55 @@ y_test_onehot = utils.to_categorical(y_test,10)
 
 type(y_train_onehot)
 
-y_train.shape
-
 y_train_onehot.shape
 
-single_image = X_train[500]
+single_image = X_train[700]
 plt.imshow(single_image,cmap='gray')
+print("YUVASAKTHI N.C \n212222240120")
 
 y_train_onehot[500]
 
 X_train_scaled = X_train_scaled.reshape(-1,28,28,1)
 X_test_scaled = X_test_scaled.reshape(-1,28,28,1)
 
-X_test_scaled.shape
-
 model = keras.Sequential()
-
-model.add(Conv2D(32,(3,3),activation="relu",input_shape=(28,28,1)))
-model.add(MaxPooling2D(pool_size=(2,2)))
-model.add(Conv2D(16,(3,3),activation='relu'))
-model.add(MaxPooling2D(pool_size=(2,2)))
-model.add(Flatten())
-model.add(Dense(32,activation="relu"))
-model.add(Dropout(0.5))
-model.add(Dense(16,activation='relu'))
-model.add(Dense(10,activation="softmax"))
+model.add(layers.Input(shape=(28,28,1)))
+model.add(layers.Conv2D(filters=16,kernel_size=(3,3),activation='relu'))
+model.add(layers.Conv2D(filters=32,kernel_size=(3,3),activation='relu'))
+model.add(layers.MaxPool2D(pool_size=(2,2)))
+model.add(layers.Flatten())
+model.add(layers.Dense(units=32,activation='relu'))
+model.add(layers.Dense(units=10,activation='softmax'))
 
 model.summary()
 
-model.compile('adam', loss ='categorical_crossentropy', metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy', # Loss function for multi-class classification
+              optimizer='adam', # A popular optimization algorithm
+              metrics=['accuracy']) # Metric to evaluate model performance
 
-model.fit(X_train_scaled, y_train_onehot, epochs=20, validation_data = (X_test_scaled,y_test_onehot))
+model.fit(X_train_scaled ,y_train_onehot, epochs=5,
+          batch_size=64,
+          validation_data=(X_test_scaled,y_test_onehot))
 
 metrics = pd.DataFrame(model.history.history)
 
 metrics.head()
 
-metrics[['loss','val_loss']].plot()
-
 metrics[['accuracy','val_accuracy']].plot()
+print("SRIRAM S \n212222240105")
+metrics[['loss','val_loss']].plot()
+print("SRIRAM S \n212222240105")
+x_test_predictions = np.argmax(model.predict(X_test_scaled), axis=1)
 
-pred = np.argmax(model.predict(X_test),axis=1)
-
-pred[0:10]
-
-y_test[0:10]
-
-print(type(y_test))
-print(type(pred))
-y_test = y_test.ravel()
-pred=pred.ravel()
-
-print(confusion_matrix(y_test,pred))
-
-print(classification_report(y_test,pred))
-
-img = image.load_img('/content/5.png')
+print(confusion_matrix(y_test,x_test_predictions))
+print("SRIRAM S \n212222240105")
+print(classification_report(y_test,x_test_predictions))
+print("SRIRAM S \n212222240105")
+img = image.load_img('imagefour.png')
 
 type(img)
 
+img = image.load_img('imagefour.png')
 img_tensor = tf.convert_to_tensor(np.asarray(img))
 img_28 = tf.image.resize(img_tensor,(28,28))
 img_28_gray = tf.image.rgb_to_grayscale(img_28)
@@ -146,7 +152,7 @@ x_single_prediction = np.argmax(
 print(x_single_prediction)
 
 plt.imshow(img_28_gray_scaled.reshape(28,28),cmap='gray')
-
+print("SRIRAM S \n212222240105")
 img_28_gray_inverted = 255.0-img_28_gray
 img_28_gray_inverted_scaled = img_28_gray_inverted.numpy()/255.0
 
@@ -155,27 +161,36 @@ x_single_prediction = np.argmax(
      axis=1)
 
 print(x_single_prediction)
+
 ```
+
 ## OUTPUT
 
 ### Training Loss, Validation Loss Vs Iteration Plot
-![dp 1](https://github.com/user-attachments/assets/169d7c7a-55a8-4d61-851a-02f45ffc8e3e)
-![dp 2](https://github.com/user-attachments/assets/3db171c2-b9d6-49ed-a6a1-7291a2ed906e)
+![image](https://github.com/user-attachments/assets/01870e59-ad01-4c82-9571-b674e396726c)
+
+![image](https://github.com/user-attachments/assets/8e69d903-0923-4727-aea7-defe0c5991d5)
+
+![image](https://github.com/user-attachments/assets/1dc3e369-b34e-4004-818b-ab96559b88d7)
 
 
 ### Classification Report
-![classification edited](https://github.com/user-attachments/assets/b8a81b32-198d-4903-8b37-4c9aa468ed79)
+
+![image](https://github.com/user-attachments/assets/82af2a4f-2e2d-4062-adaa-7114bfae6635)
+
+
 
 ### Confusion Matrix
-![conf matrix](https://github.com/user-attachments/assets/e4d9924d-6ae4-4fa4-8c0e-a85fc239b8bd)
+
+![image](https://github.com/user-attachments/assets/ad1252ae-ca5c-4263-8a4d-92666ed03e8a)
+
+
 
 
 ### New Sample Data Prediction
-![download (1)](https://github.com/user-attachments/assets/df0cec52-1744-4c24-ac97-8d319a4bce93)
 
-
-![mnist](https://github.com/user-attachments/assets/da2aa6cc-4f97-47b4-b4fb-877686db2c17)
+![image](https://github.com/user-attachments/assets/af1a22cd-fdfa-4a5f-8c44-76fcb3fa603c)
 
 
 ## RESULT
-Thus, a convolutional deep neural network for digit classification and to verify the response for scanned handwritten images is written and executed successfully.
+A convolutional deep neural network for digit classification and to verify the response for scanned handwritten images is developed sucessfully.
