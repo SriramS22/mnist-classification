@@ -164,7 +164,7 @@ print(x_single_prediction)
 
 
 ### Classification Report
-![class report](https://github.com/user-attachments/assets/2d1b50ca-1fd0-40c8-9e76-af55c4c843cd)
+![classification edited](https://github.com/user-attachments/assets/b8a81b32-198d-4903-8b37-4c9aa468ed79)
 
 ### Confusion Matrix
 ![conf matrix](https://github.com/user-attachments/assets/e4d9924d-6ae4-4fa4-8c0e-a85fc239b8bd)
